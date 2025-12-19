@@ -1,0 +1,56 @@
+# Example config for gorunandcallme.
+# You can select a profile via: --profile <name>
+profiles:
+  default:
+    notify:
+      callbacks: ["discord", "telegram"]
+      notify_each: "10s"
+      notify_on: ["start", "finish"]
+      mode: "auto"           # text-only | attach-only | auto | summary
+      strip_ansi: "auto"     # auto | always | never
+      strip_progress: "auto" # auto | always | never
+
+      text:
+        select: "all"        # all | head | tail
+        head_lines: 200
+        tail_lines: 200
+
+      attach:
+        enabled: true
+        split_mode: "split"  # split | tail
+        tail_lines: 5000
+        part_max_bytes:
+          discord: 8000000
+          telegram: 45000000
+          webhook: 10000000
+
+      filters:
+        include: []
+        exclude: ["^\\[INF\\]"]
+      redaction:
+        defaults: true
+        patterns:
+          - "(?i)(api[_-]?key|token|secret|password)=\\S+"
+
+      alerts:
+        patterns:
+          - "(?i)critical|cve-|vuln|found"
+        include_context_lines: 25
+
+    discord:
+      webhook_url: "https://discord.com/api/webhooks/XXX/YYY"
+
+    telegram:
+      bot_token: "123456:ABCDEF"
+      chat_id: "123456789"
+
+    slack:
+      webhook_url: "https://hooks.slack.com/services/AAA/BBB/CCC"
+      # Optional for attachments (Slack incoming webhook can't upload files):
+      bot_token: ""
+      channel: ""
+
+    webhook:
+      url: "https://example.com/webhook"
+      headers:
+        X-Auth: "secret"
